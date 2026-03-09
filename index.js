@@ -30,23 +30,40 @@ const url = require("url");
 //////////////////////////////////////////////////
 //SERVER
 
-fs.readFileSync(`${__dirname}/dev-data/data.json`, "utf-8", (err, data) => {
-  const productData = JSON.parse(data);
-});
+const tempOverview = fs.readFileSync(
+  `${__dirname}/templates/template-overview.html`,
+  "utf-8",
+);
+const tempCard = fs.readFileSync(
+  `${__dirname}/templates/template-card.html`,
+  "utf-8",
+);
+const tempProduct = fs.readFileSync(
+  `${__dirname}/templates/template-product.html`,
+  "utf-8",
+);
+
+const data = fs.readFileSync(`${__dirname}/dev-data/data.json`, "utf-8");
+const dataObj = JSON.parse(data);
 
 const server = http.createServer((req, res) => {
   const pathName = req.url;
 
+  //Overview page
   if (pathName === "/" || pathName === "/overview") {
-    res.end("This is the OVERVIEW");
+    res.writeHead(200, { "Content-type": "text/html" });
+    res.end("tempOverview");
+
+    //Product page
   } else if (pathName === "/product") {
     res.end("This is the PRODUCT");
+
+    //API
   } else if (pathName === "/api") {
-    fs.readFile(`${__dirname}/dev-data/data.json`, "utf-8", (err, data) => {
-      const productData = JSON.parse(data);
-      res.writeHead(200, { "Content-type": "application/json" });
-      res.end(data);
-    });
+    res.writeHead(200, { "Content-type": "application/json" });
+    res.end(data);
+
+    //Not found
   } else {
     res.writeHead(404, {
       "Content-type": "text/html",
