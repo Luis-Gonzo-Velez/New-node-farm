@@ -52,10 +52,13 @@ const server = http.createServer((req, res) => {
   //Overview page
   if (pathName === "/" || pathName === "/overview") {
     res.writeHead(200, { "Content-type": "text/html" });
-    res.end("tempOverview");
+    // send the contents of the template, not the literal string
+    res.end(tempOverview);
 
     //Product page
   } else if (pathName === "/product") {
+    // placeholder response – you can later use `dataObj` with query params
+    res.writeHead(200, { "Content-type": "text/html" });
     res.end("This is the PRODUCT");
 
     //API
